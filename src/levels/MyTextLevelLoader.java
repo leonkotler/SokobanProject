@@ -4,7 +4,6 @@ import level_items.*;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 /* MyTextLevelLoader will return a level from a file input stream */
 public class MyTextLevelLoader implements LevelLoader{
@@ -13,8 +12,8 @@ public class MyTextLevelLoader implements LevelLoader{
     public Level loadLevel(InputStream stream) throws IOException{
 
         BufferedReader fileReader = new BufferedReader(new InputStreamReader(stream));
-        ArrayList<ArrayList<Item>> levelMap = new ArrayList<>();
-        levelMap.add(new ArrayList<Item>());
+        ArrayList<ArrayList<Tile>> levelMap = new ArrayList<>();
+        levelMap.add(new ArrayList<Tile>());
 
         // variables for iterating through the 2d ArrayList
         int outerIndex=0;
@@ -24,39 +23,37 @@ public class MyTextLevelLoader implements LevelLoader{
             while ((c = fileReader.read())!=-1){ // while not end of stream
                 char character = (char)c;
                     switch (character){
-                        // for each char we'll add it's represented item
+                        // for each char we'll add it's represented item to the tile
                         case '#':
-                            levelMap.get(outerIndex).add(innerIndex,new WallItem(new Location(outerIndex,innerIndex)));
+                            levelMap.get(outerIndex).add(innerIndex,new Tile(new Location(outerIndex,innerIndex),new WallItem()));
                             innerIndex++;
                             break;
                         case '@':
-                            levelMap.get(outerIndex).add(innerIndex,new BoxItem(new Location(outerIndex,innerIndex)));
+                            levelMap.get(outerIndex).add(innerIndex,new Tile(new Location(outerIndex,innerIndex),new BoxItem()));
                             innerIndex++;
                             break;
                         case ' ':
-                            levelMap.get(outerIndex).add(innerIndex,new TileItem(new Location(outerIndex,innerIndex)));
+                            levelMap.get(outerIndex).add(innerIndex,new Tile(new Location(outerIndex,innerIndex)));
                             innerIndex++;
                             break;
                         case 'A':
-                            levelMap.get(outerIndex).add(innerIndex,new PlayerItem(new Location(outerIndex,innerIndex)));
+                            levelMap.get(outerIndex).add(innerIndex,new Tile(new Location(outerIndex,innerIndex),new PlayerItem()));
                             innerIndex++;
                             break;
                         case 'o':
-                            levelMap.get(outerIndex).add(innerIndex,new TargetItem(new Location(outerIndex,innerIndex)));
+                            levelMap.get(outerIndex).add(innerIndex,new TargetTile(new Location(outerIndex,innerIndex)));
                             innerIndex++;
                             break;
                         case '\n':
                             outerIndex++;
                             innerIndex=0;
-                            levelMap.add(new ArrayList<Item>());
+                            levelMap.add(new ArrayList<Tile>());
                             break;
                     }
             }
 
         // creating and returning our new level with the map we've received
-        Level level = new Level(levelMap);
-
-        return level;
+        return  new Level(levelMap);
     }
 }
 

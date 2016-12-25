@@ -1,6 +1,6 @@
 package display;
 
-import level_items.Item;
+import level_items.Tile;
 import levels.Level;
 
 import java.util.ArrayList;
@@ -21,9 +21,9 @@ public class CLIDisplayer implements Displayer {
 
     @Override
     public void display() {
-        for (ArrayList<Item> list : levelToDisplay.getLevelMap()) {
-            for (Item item : list){
-                System.out.print(item.toString());
+        for (ArrayList<Tile> list : levelToDisplay.getLevelMap()) {
+            for (Tile tile : list){
+                System.out.print(tile.toString());
             }
             System.out.println();
         }

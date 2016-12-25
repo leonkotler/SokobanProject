@@ -1,7 +1,7 @@
 package levels;
 
 import exceptions.LevelEmptyException;
-import level_items.Item;
+import level_items.Tile;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -17,9 +17,9 @@ public class MyTextLevelSaver implements LevelSaver {
 
         // writing the level to file
         PrintWriter writer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(stream)));
-        for (ArrayList<Item> list : level.getLevelMap()){
-            for (Item item : list){
-                writer.print(item.toString());
+        for (ArrayList<Tile> list : level.getLevelMap()){
+            for (Tile tile : list){
+                writer.print(tile.toString());
             }
             writer.println();
         }
