@@ -2,24 +2,43 @@ package levels;
 
 import level_items.Location;
 import level_items.Tile;
+import utils.Direction;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Level implements Serializable{
+public class Level implements Serializable {
 
 
     protected ArrayList<ArrayList<Tile>> levelMap; // 2D ArrayList that contains items
     protected Location playerLocation;             // holds the current player location
     protected ArrayList<Tile> targets;             // holds the targets
+    protected int xLenght;                         // level dimensions
+    protected int yWidth;
+
+    public int getxLenght() {
+        return xLenght;
+    }
+
+    public void setxLenght(int xLenght) {
+        this.xLenght = xLenght;
+    }
+
+    public int getyWidth() {
+        return yWidth;
+    }
+
+    public void setyWidth(int yWidth) {
+        this.yWidth = yWidth;
+    }
 
     public Level(ArrayList<ArrayList<Tile>> levelMap) {
         this.levelMap = levelMap;
         initData();
     }
 
-
-    public Level() {}
+    public Level() {
+    }
 
     public void setLevelMap(ArrayList<ArrayList<Tile>> levelMap) {
         this.levelMap = levelMap;
@@ -45,26 +64,40 @@ public class Level implements Serializable{
         this.targets = targets;
     }
 
-    // iterates through the level's map and extracts the player's location and targets
-    public void initData(){
-        for (ArrayList<Tile> row : levelMap){
-            for(Tile tile : row){
-                if (tile.getContains()!=null) { // checking if the tile contains anything
-                    if (tile.getContains().getType().equals("PlayerItem"))
-                        setPlayerLocation(tile.getLocation()); // adding the player's location
-                    if (tile.getClass().toString().equals("TargetTile"))
-                        targets.add(tile); // adding the tile to the targets array
+    public void initData() {
+        targets = new ArrayList<>();
+
+        // setting the level's dimensions
+        xLenght = levelMap.size();
+        yWidth = levelMap.get(0).size();
+
+        // iterates through the level's map and extracts the player's location and targets
+        for (ArrayList<Tile> row : levelMap) {
+            if (row.size()>yWidth)
+                yWidth=row.size();
+            for (Tile tile : row) {
+                if (tile.toString().equals("o"))
+                    targets.add(tile); // adding the tile to the targets array
+                if (tile.toString().equals("A"))
+                    setPlayerLocation(tile.getLocation()); // adding the player's location
                 }
             }
-        }
     }
 
-    public boolean isWon(){
+    public void moveItem(Location to, Location from) {
+        // moves the Item in the provided location to the provided location
+        levelMap.get(to.getX()).get(to.getY())
+                .setContains(levelMap.get(from.getX()).get(from.getY()).getContains());
+        // setting the from tile to contain nothing
+        levelMap.get(from.getX()).get(from.getY()).freeTile();
+    }
+
+    public boolean isWon() {
         // checks if every target has a box in it
         boolean win = true;
 
         for (Tile tile : targets)
-            if(tile.getContains()!=null)
+            if (tile.getContains() != null)
                 if (!tile.getContains().getType().equals("BoxItem"))
                     win = false;
 

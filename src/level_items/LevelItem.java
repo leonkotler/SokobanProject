@@ -6,7 +6,7 @@ import java.io.Serializable;
 public abstract class LevelItem implements Item{
 
     public String getType(){
-        return this.getClass().getName();
+        return this.getClass().getSimpleName();
     }
 
 }
