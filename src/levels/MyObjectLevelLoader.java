@@ -10,19 +10,11 @@ import java.io.ObjectInputStream;
 public class MyObjectLevelLoader implements LevelLoader {
 
     @Override
-    public Level loadLevel(InputStream stream) {
-
-        try {
+    public Level loadLevel(InputStream stream) throws IOException,ClassNotFoundException {
             // loading the level from the stream
             Level level = (Level) new ObjectInputStream(stream).readObject();
             if (level!=null && level.getLevelMap()!=null)
                 return level;
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
 
         return null;
     }

@@ -1,10 +1,12 @@
 package commands;
 
-import exceptions.LevelEmptyException;
 import levels.*;
 import utils.FilePathUtil;
+
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 
 /* SaveCommand saves a level using it's appropriate saver based on the file's extension */
 public class SaveCommand implements Command{
@@ -15,6 +17,7 @@ public class SaveCommand implements Command{
     public String getFilePath() {
         return filePath;
     }
+
 
     public void setFilePath(String filePath) {
         this.filePath = filePath;
@@ -33,33 +36,26 @@ public class SaveCommand implements Command{
         this.levelToSave = levelToSave;
     }
 
+    public SaveCommand() {
+    }
+
     @Override
-    public void execute() {
+    public void execute() throws IOException,ClassNotFoundException{
         // getting the extension from the file path
         FilePathUtil checker = new FilePathUtil();
         String ext = checker.getExtension(filePath);
 
         // TODO: Implement an efficient data structure for the extensions
         // decides which saver to use based on the extension
+        if (ext==null)
+            throw new FileNotFoundException("Please provide a valid extension");
         if (ext.equals("txt")) {
             MyTextLevelSaver txtSaver = new MyTextLevelSaver();
-            try {
-                txtSaver.saveLevel(levelToSave,new FileOutputStream(filePath));
-            } catch (LevelEmptyException e) {
-                e.printStackTrace();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
+            txtSaver.saveLevel(levelToSave,new FileOutputStream(filePath));
         }
         if (ext.equals("obj")){
             MyObjectLevelSaver objSaver = new MyObjectLevelSaver();
-            try {
-                objSaver.saveLevel(levelToSave,new FileOutputStream(filePath));
-            } catch (LevelEmptyException e) {
-                e.printStackTrace();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
+            objSaver.saveLevel(levelToSave,new FileOutputStream(filePath));
         }
     }
 }

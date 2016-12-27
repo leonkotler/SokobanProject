@@ -36,34 +36,22 @@ public class LoadCommand implements Command {
     }
 
     @Override
-    public void execute() {
+    public void execute() throws IOException, ClassNotFoundException {
 
-        // TODO: Implement an elegan solution for breaking out
-//        if (filePath==null) {
-//
-//        }
+        if (filePath == null)
+            throw new FileNotFoundException("No file name provided");
 
-        // getting the extension from the file path
         FilePathUtil checker = new FilePathUtil();
         String ext = checker.getExtension(filePath);
 
         // TODO: Implement an efficient data structure for the extensions
+
         // decides which loader to use based on the extension
-        if (ext.equals("txt")) {
-            try {
-                loadedLevel = new MyTextLevelLoader().loadLevel(new FileInputStream(filePath));
-            } catch (FileNotFoundException e) {
-                System.out.println("File not found");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        if (ext.equals("obj")) {
-            try {
-                loadedLevel = new MyObjectLevelLoader().loadLevel(new FileInputStream(filePath));
-            } catch (FileNotFoundException e) {
-                System.out.println("File not found");
-            }
-        }
+        if (ext==null)
+            throw new FileNotFoundException("Please provide a valid extension");
+        if (ext.equals("txt"))
+            loadedLevel = new MyTextLevelLoader().loadLevel(new FileInputStream(filePath));
+        if (ext.equals("obj"))
+            loadedLevel = new MyObjectLevelLoader().loadLevel(new FileInputStream(filePath));
     }
 }

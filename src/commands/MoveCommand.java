@@ -5,6 +5,8 @@ import levels.Level;
 import policies.Policy;
 import utils.Direction;
 
+import java.io.IOException;
+
 public class MoveCommand implements Command{
 
     protected Level level;
@@ -19,6 +21,7 @@ public class MoveCommand implements Command{
         this.policy = policy;
         this.direction = direction;
     }
+
 
     public Level getLevel() {
         return level;
@@ -45,7 +48,7 @@ public class MoveCommand implements Command{
     }
 
     @Override
-    public void execute() {
+    public void execute() throws IOException,ClassNotFoundException {
         policy.checkPolicy();
     }
 }
