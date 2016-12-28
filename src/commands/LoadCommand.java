@@ -11,47 +11,44 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /* LoadCommand loads a file (supports different extensions) and stores is within itself. The level is accessible through getLoadedLevel() */
-public class LoadCommand implements Command {
+public class LoadCommand extends IOcommand{
 
-    private String filePath;
-    private Level loadedLevel;
-
-    public LoadCommand(String filePath) {
-        this.filePath = filePath;
+    public LoadCommand(String filePath) throws IOException {
+       super(filePath);
     }
 
     public LoadCommand() {
     }
 
-    public Level getLoadedLevel() {
-        return loadedLevel;
-    }
-
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
-    }
-
-    public String getFilePath() {
-        return filePath;
-    }
 
     @Override
-    public void execute() throws IOException, ClassNotFoundException {
-
-        if (filePath == null)
-            throw new FileNotFoundException("No file name provided");
+    public void execute() throws IOException {
 
         FilePathUtil checker = new FilePathUtil();
         String ext = checker.getExtension(filePath);
 
-        // TODO: Implement an efficient data structure for the extensions
-
-        // decides which loader to use based on the extension
-        if (ext==null)
-            throw new FileNotFoundException("Please provide a valid extension");
-        if (ext.equals("txt"))
-            loadedLevel = new MyTextLevelLoader().loadLevel(new FileInputStream(filePath));
-        if (ext.equals("obj"))
-            loadedLevel = new MyObjectLevelLoader().loadLevel(new FileInputStream(filePath));
+//        // TODO: Implement an efficient data structure for the extensions
+//
+//        // decides which loader to use based on the extension
+//        if (ext.equals("txt"))
+//            level = new MyTextLevelLoader().loadLevel(new FileInputStream(filePath));
+//        else if (ext.equals("obj")) {
+//            try {
+//                level = new MyObjectLevelLoader().loadLevel(new FileInputStream(filePath));
+//            } catch (ClassNotFoundException e) {
+//                System.out.println(e.getMessage());
+//            }
+//        }
+//        else
+//            throw new IOException("Please provide a valid file format");
+        // checking if the extension is valid
+        if (!loaderExtensions.containsKey(ext))
+            throw new IOException("Please provide a valid file format");
+        else
+            try {
+                level = loaderExtensions.get(ext).loadLevel(new FileInputStream(filePath));
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
     }
 }

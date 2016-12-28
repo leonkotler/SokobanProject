@@ -1,14 +1,11 @@
 package cli;
 
 import commands.*;
-import display.CLIDisplayer;
 import levels.Level;
-import levels.LevelLoader;
 import policies.MySokobanPolicy;
 import utils.Direction;
 import utils.FilePathUtil;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Scanner;
 
@@ -39,6 +36,7 @@ public class Cli {
 
         Level level = null;
 
+        // initiating all of the CLI's commands
         LoadCommand loadCommand = new LoadCommand();
         SaveCommand saveCommand = new SaveCommand();
         DisplayCommand displayCommand = new DisplayCommand();
@@ -46,24 +44,26 @@ public class Cli {
 
         while (!exit) {
             try {
+                // getting a line from the scanner and splitting it on the space char
                 Scanner scanner = new Scanner(System.in);
                 command = scanner.nextLine().split(" ");
-
+                // swithcing on the command's name
                 switch (command[0]) {
                     case "load":
                         loadCommand.setFilePath(command[1]);
                         loadCommand.execute();
-                        level = loadCommand.getLoadedLevel();
-                        System.out.println("Level " + new FilePathUtil().getFileNameFromPath(command[1]) + " loaded successfully");
+                        level = loadCommand.getLevel();
+                        System.out.println(new FilePathUtil().getFileNameFromPath(command[1]) + " loaded successfully");
                         break;
                     case "save":
                         if (level == null)
                             System.out.println("There is no level to save. Try loading one first.");
-
-                        saveCommand.setFilePath(command[1]);
-                        saveCommand.setLevelToSave(level);
-                        saveCommand.execute();
-                        System.out.println("Level " + new FilePathUtil().getFileNameFromPath(command[1]) + " saved successfully");
+                        else {
+                            saveCommand.setFilePath(command[1]);
+                            saveCommand.setLevel(level);
+                            saveCommand.execute();
+                            System.out.println("Level " + new FilePathUtil().getFileNameFromPath(command[1]) + " saved successfully");
+                        }
                         break;
                     case "display":
                         if (level == null)
@@ -72,7 +72,6 @@ public class Cli {
                             displayCommand.setLevelToDisplay(level);
                             displayCommand.execute();
                         }
-
                         break;
                     case "exit":
                         System.out.println("Exiting");
@@ -81,13 +80,13 @@ public class Cli {
                     case "move":
                         if (level == null)
                             System.out.println("There is no level to play. Try loading one first.");
-
-                        moveCommand.setLevel(level);
-                        moveCommand.setPolicy(new MySokobanPolicy(level, Direction.valueOf(command[1].toUpperCase())));
-                        moveCommand.setDirection(Direction.valueOf(command[1].toUpperCase()));
-                        moveCommand.execute();
-                        displayCommand.execute();
-
+                        else {
+                            moveCommand.setLevel(level);
+                            moveCommand.setPolicy(new MySokobanPolicy(level, Direction.valueOf(command[1].toUpperCase())));
+                            moveCommand.setDirection(Direction.valueOf(command[1].toUpperCase()));
+                            moveCommand.execute();
+                            displayCommand.execute();
+                        }
                         break;
                     default:
                         System.out.println("Unrecognizable command, try again.");
@@ -95,8 +94,6 @@ public class Cli {
                 }
             } catch (IOException e) {
                 System.out.println(e.getMessage());
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
             }
         }
 

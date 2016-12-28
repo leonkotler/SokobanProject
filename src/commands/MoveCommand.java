@@ -9,17 +9,17 @@ import java.io.IOException;
 
 public class MoveCommand implements Command{
 
-    protected Level level;
-    protected Policy policy;
-    protected Direction direction;
+    protected Level level=null;
+    protected Policy policy=null;
+    protected Direction direction=null;
 
     public MoveCommand() {
     }
 
-    public MoveCommand(Level level, Policy policy, Direction direction) {
-        this.level = level;
-        this.policy = policy;
-        this.direction = direction;
+    public MoveCommand(Level level, Policy policy, Direction direction) throws IOException {
+        setLevel(level);
+        setPolicy(policy);
+        setDirection(direction);
     }
 
 
@@ -27,7 +27,9 @@ public class MoveCommand implements Command{
         return level;
     }
 
-    public void setLevel(Level level) {
+    public void setLevel(Level level) throws IOException {
+        if (level==null)
+            throw new IOException("Please provide a valid level");
         this.level = level;
     }
 
@@ -35,7 +37,9 @@ public class MoveCommand implements Command{
         return policy;
     }
 
-    public void setPolicy(Policy policy) {
+    public void setPolicy(Policy policy) throws IOException {
+        if (policy==null)
+            throw new IOException("Please provide a valid policy");
         this.policy = policy;
     }
 
@@ -43,12 +47,14 @@ public class MoveCommand implements Command{
         return direction;
     }
 
-    public void setDirection(Direction direction) {
+    public void setDirection(Direction direction) throws IOException {
+        if (direction==null)
+            throw new IOException("Please provide a valid direction");
         this.direction = direction;
     }
 
     @Override
-    public void execute() throws IOException,ClassNotFoundException {
+    public void execute() throws IOException {
         policy.checkPolicy();
     }
 }

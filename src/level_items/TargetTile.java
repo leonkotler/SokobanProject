@@ -9,6 +9,9 @@ public class TargetTile extends Tile implements Serializable {
         super(location);
     }
 
+    public TargetTile() {
+    }
+
     @Override
     public String toString() {
         // if the target contains any other item, then it gets displayed, otherwise - display "o"

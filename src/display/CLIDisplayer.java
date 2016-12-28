@@ -3,18 +3,13 @@ package display;
 import level_items.Tile;
 import levels.Level;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
-public class CLIDisplayer implements Displayer {
+public class CLIDisplayer extends GeneralDisplayer {
 
-    Level levelToDisplay;
-
-    public void setLevelToDisplay(Level levelToDisplay){
-        this.levelToDisplay = levelToDisplay;
-    }
-
-    public CLIDisplayer(Level levelToDisplay) {
-        this.levelToDisplay = levelToDisplay;
+    public CLIDisplayer(Level levelToDisplay) throws IOException {
+       super(levelToDisplay);
     }
 
     public CLIDisplayer() {}

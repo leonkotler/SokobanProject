@@ -6,23 +6,24 @@ import java.io.IOException;
 
 public class ExitCommand implements Command{
 
-    Cli cli;
+    Cli cli=null;
 
     public Cli getCli() {
         return cli;
     }
 
-    public void setCli(Cli cli) {
+    public void setCli(Cli cli) throws IOException {
+        if (cli==null)
+            throw new IOException("Please provide a valid cli");
         this.cli = cli;
     }
 
-    public ExitCommand(Cli cli) {
-        this.cli = cli;
+    public ExitCommand(Cli cli) throws IOException {
+        setCli(cli);
     }
 
     @Override
-    public void execute() throws IOException,ClassNotFoundException{
-        if (cli!=null)
-            cli.setExit(true);
+    public void execute() throws IOException{
+        cli.setExit(true);
     }
 }

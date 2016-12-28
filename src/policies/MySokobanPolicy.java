@@ -1,31 +1,33 @@
 package policies;
 
-import commands.Command;
-import commands.MoveCommand;
 import level_items.Location;
 import level_items.Tile;
 import levels.Level;
 import utils.Direction;
 
+import java.io.IOException;
+
 /* describes the sokobn default policy */
 public class MySokobanPolicy implements Policy {
 
-    protected Level level;
-    protected Direction direction;
+    protected Level level=null;
+    protected Direction direction=null;
 
     public MySokobanPolicy() {
     }
 
-    public MySokobanPolicy(Level level, Direction direction) {
-        this.level = level;
-        this.direction = direction;
+    public MySokobanPolicy(Level level, Direction direction) throws IOException {
+        setLevel(level);
+        setDirection(direction);
     }
 
     public Level getLevel() {
         return level;
     }
 
-    public void setLevel(Level level) {
+    public void setLevel(Level level) throws IOException {
+        if (level==null)
+            throw new IOException("Please provide a valid level");
         this.level = level;
     }
 
@@ -33,7 +35,9 @@ public class MySokobanPolicy implements Policy {
         return direction;
     }
 
-    public void setDirection(Direction direction) {
+    public void setDirection(Direction direction) throws IOException {
+        if (direction==null)
+            throw new IOException("Please provide a valid direction");
         this.direction = direction;
     }
 

@@ -2,7 +2,6 @@ package levels;
 
 import level_items.Location;
 import level_items.Tile;
-import utils.Direction;
 
 import java.io.Serializable;
 import java.util.ArrayList;

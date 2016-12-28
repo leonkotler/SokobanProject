@@ -15,6 +15,8 @@ public class Tile implements Serializable{
         this.contains=null;
     }
 
+
+
     public Tile(Location location) {
         this.location = location;
     }
