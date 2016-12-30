@@ -1,5 +1,7 @@
 package levels;
 
+import level_items.BoxItem;
+import level_items.Item;
 import level_items.Location;
 import level_items.Tile;
 
@@ -9,11 +11,20 @@ import java.util.ArrayList;
 public class Level implements Serializable {
 
 
-    protected ArrayList<ArrayList<Tile>> levelMap; // 2D ArrayList that contains items
+    protected ArrayList<ArrayList<Tile>> levelMap; // 2D ArrayList that contains tiles
     protected Location playerLocation;             // holds the current player location
-    protected ArrayList<Tile> targets;             // holds the targets
+    protected ArrayList<Tile> targets;             // points to the targets
+    protected ArrayList<Item> boxes;               // points to the boxes
     protected int xLenght;                         // level dimensions
     protected int yWidth;
+
+    public ArrayList<Item> getBoxes() {
+        return boxes;
+    }
+
+    public void setBoxes(ArrayList<Item> boxes) {
+        this.boxes = boxes;
+    }
 
     public int getxLenght() {
         return xLenght;
@@ -65,6 +76,7 @@ public class Level implements Serializable {
 
     public void initData() {
         targets = new ArrayList<>();
+        boxes = new ArrayList<>();
 
         // setting the level's dimensions
         xLenght = levelMap.size();
@@ -72,15 +84,17 @@ public class Level implements Serializable {
 
         // iterates through the level's map and extracts the player's location and targets
         for (ArrayList<Tile> row : levelMap) {
-            if (row.size()>yWidth)
-                yWidth=row.size();
+            if (row.size() > yWidth)
+                yWidth = row.size();
             for (Tile tile : row) {
                 if (tile.toString().equals("o"))
                     targets.add(tile); // adding the tile to the targets array
                 if (tile.toString().equals("A"))
                     setPlayerLocation(tile.getLocation()); // adding the player's location
-                }
+                if (tile.toString().equals("@"))
+                    boxes.add(tile.getContains());
             }
+        }
     }
 
     public void moveItem(Location to, Location from) {
@@ -95,11 +109,12 @@ public class Level implements Serializable {
         // checks if every target has a box in it
         boolean win = true;
 
-        for (Tile tile : targets)
-            if (tile.getContains() != null)
+        for (Tile tile : targets) {
+            if (tile.getContains() != null) {
                 if (!tile.getContains().getType().equals("BoxItem"))
                     win = false;
-
+            } else win = false;
+        }
         return win;
     }
 }

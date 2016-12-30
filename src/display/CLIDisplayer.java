@@ -12,7 +12,9 @@ public class CLIDisplayer extends GeneralDisplayer {
        super(levelToDisplay);
     }
 
-    public CLIDisplayer() {}
+    public CLIDisplayer() {
+
+    }
 
     @Override
     public void display() {

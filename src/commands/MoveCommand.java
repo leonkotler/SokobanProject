@@ -57,4 +57,13 @@ public class MoveCommand implements Command{
     public void execute() throws IOException {
         policy.checkPolicy();
     }
+
+    public boolean isVaildDirection(String direction){
+        // checks if the provided string is a valid direction (enum)
+        for (Direction dir : Direction.values())
+            if (dir.name().equals(direction.toUpperCase()))
+                return true;
+
+        return false;
+    }
 }

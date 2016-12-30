@@ -1,6 +1,7 @@
 package commands;
 
 import display.CLIDisplayer;
+import display.Displayer;
 import levels.Level;
 
 import java.io.IOException;
@@ -8,17 +9,25 @@ import java.io.IOException;
 
 public class DisplayCommand implements Command {
 
-    private Level levelToDisplay=null;
+    protected Displayer displayer=null;
 
-    public void setLevelToDisplay(Level levelToDisplay) throws IOException{
-        if (levelToDisplay==null)
-            throw new IOException("Please provide a valid level");
-
-        this.levelToDisplay = levelToDisplay;
+    public DisplayCommand(Displayer displayer) throws IOException {
+        setDisplayer(displayer);
     }
 
-    public DisplayCommand(Level levelToDisplay) throws IOException{
-        setLevelToDisplay(levelToDisplay);
+
+    public Displayer getDisplayer() {
+        return displayer;
+    }
+
+    public void setDisplayer(Displayer displayer) throws IOException {
+        if (displayer==null)
+            throw new IOException("Please provide a valid displayer");
+        this.displayer = displayer;
+    }
+
+    public DisplayCommand(Level levelToDisplay,Displayer displayer) throws IOException{
+        setDisplayer(displayer);
     }
 
     public DisplayCommand() {
@@ -26,8 +35,6 @@ public class DisplayCommand implements Command {
 
     @Override
     public void execute() throws IOException{
-        CLIDisplayer cliDisplayer = new CLIDisplayer();
-        cliDisplayer.setLevelToDisplay(levelToDisplay);
-        cliDisplayer.display();
+        displayer.display();
     }
 }
