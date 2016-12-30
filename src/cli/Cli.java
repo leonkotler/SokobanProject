@@ -31,6 +31,16 @@ public class Cli {
         this.exit = exit;
     }
 
+    public void help(){
+        // displays the help menu
+        System.out.println();
+        System.out.println("    Type \"load fullpath\" to load a level from a file");
+        System.out.println("    Type \"save fullpath\" to save a level from to file");
+        System.out.println("    Type \"move direction (up,down,left,right)\" to move the character in the desired direction");
+        System.out.println("    Type \"help\" show the help menu");
+        System.out.println();
+    }
+
 
     void run() throws IOException {
 
@@ -44,12 +54,18 @@ public class Cli {
         DisplayCommand displayCommand = new DisplayCommand();
         MoveCommand moveCommand = new MoveCommand();
 
+        System.out.println("Welcome to Sokoban!");
+        help();
         while (!exit) {
+            System.out.println();
             // getting a line from the scanner and splitting it on the space char
             Scanner scanner = new Scanner(System.in);
             command = scanner.nextLine().split(" ");
             // swithcing on the command's name
             switch (command[0]) {
+                case "help":
+                    help();
+                    break;
                 case "load":
                     loadCommand.setFilePath(command[1]);
                     loadCommand.execute();
