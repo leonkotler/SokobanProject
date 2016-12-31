@@ -36,7 +36,8 @@ public class Cli {
         System.out.println();
         System.out.println("    Type \"load fullpath\" to load a level from a file");
         System.out.println("    Type \"save fullpath\" to save a level from to file");
-        System.out.println("    Type \"move direction (up,down,left,right)\" to move the character in the desired direction");
+        System.out.println("    Type \"move direction\" (up,down,left,right) to move the character in the desired direction");
+        System.out.println("    Type \"exit\" to exit the game");
         System.out.println("    Type \"help\" show the help menu");
         System.out.println();
     }
