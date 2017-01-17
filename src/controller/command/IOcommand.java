@@ -1,6 +1,8 @@
 package controller.command;
 
+import model.Model;
 import model.data.level.*;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
@@ -9,13 +11,13 @@ import java.util.HashMap;
 public abstract class IOcommand implements Command{
 
     protected String filePath=null;
-    protected Level level=null;
+    protected Model model=null;
     protected HashMap<String, LevelLoader> loaderExtensions=null;
     protected HashMap<String, LevelSaver> saverExtensions=null;
 
-    public IOcommand(String filePath, Level level) throws IOException {
+    public IOcommand(String filePath, Model model) throws IOException {
         setFilePath(filePath);
-        setLevel(level);
+        setModel(model);
         setDefaultExtension();
     }
 
@@ -37,14 +39,14 @@ public abstract class IOcommand implements Command{
         this.filePath = filePath;
     }
 
-    public Level getLevel() {
-        return level;
+    public Model getModel() {
+        return model;
     }
 
-    public void setLevel(Level level) throws IOException {
-        if (level==null)
+    public void setModel(Model model) throws IOException {
+        if (model==null)
             throw new IOException("Please provide a valid level");
-        this.level = level;
+        this.model = model;
     }
 
     protected void setDefaultExtension(){

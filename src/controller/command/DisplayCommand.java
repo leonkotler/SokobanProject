@@ -4,6 +4,7 @@ import controller.displayer.Displayer;
 import model.data.level.Level;
 
 import java.io.IOException;
+import java.util.LinkedList;
 
 
 public class DisplayCommand implements Command {
@@ -34,5 +35,11 @@ public class DisplayCommand implements Command {
     @Override
     public void execute() throws IOException{
         displayer.display();
+    }
+
+    @Override
+    public void setParams(LinkedList<String> params) throws IOException {
+        if (params.size()!=0)
+            throw new IOException("Usage: display");
     }
 }

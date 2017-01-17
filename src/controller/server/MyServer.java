@@ -2,8 +2,6 @@ package controller.server;
 
 
 import java.io.IOException;
-import java.io.PrintStream;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -56,7 +54,9 @@ public class MyServer{
             }
         }
         try {
+            System.out.println("Shutting down server");
             server.close();
+            System.out.println("Server closed");
         } catch (IOException e) {
             e.printStackTrace();
         }
